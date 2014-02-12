@@ -190,8 +190,8 @@ instance Pretty ArchPkg where
                     nest 4 (empty <$>
                         text "cd \"${srcdir}/${_hkgname}-${pkgver}\"" <$>
                         empty <$>
-                        nest 4 (text "runhaskell Setup configure -O -p --enable-library-profiling --enable-shared \\" <$>
-                            text "--enable-split-objs --enable-shared --ghc-option= \"-dynload=deploy\" \\" <$>
+                        nest 4 (text "runhaskell Setup configure -O -p \\" <$>
+                            text "--enable-split-objs --enable-shared --ghc-option=\"-dynload=deploy\" \\" <$>
                             text "--prefix=/usr --docdir=\"/usr/share/doc/${pkgname}\" \\" <$>
                             text "--libsubdir=\\$compiler/site-local/\\$pkgid" <> confFlags) <$>
                         text "runhaskell Setup build" <$>
