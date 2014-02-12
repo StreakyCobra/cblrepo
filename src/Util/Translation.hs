@@ -162,6 +162,8 @@ instance Pretty ArchPkg where
             , pretty source
             , maybe empty pretty install
             , pretty sha256sums
+            , empty
+            , text "_ghcver=\"7.10.1\""
             , empty, text "# PKGBUILD functions"
             , empty
             , prepareFunction
@@ -223,7 +225,14 @@ instance Pretty ArchPkg where
                         text "ln -s \"/usr/share/doc/${pkgname}/html\" \"${pkgdir}/usr/share/doc/ghc/html/libraries/${_hkgname}\"" <$>
                         text "runhaskell Setup copy --destdir=\"${pkgdir}\"" <$>
                         maybe empty (\ _ -> text "install -D -m644 \"${_licensefile}\" \"${pkgdir}/usr/share/licenses/${pkgname}/LICENSE\"" <$>
-                            text "rm -f \"${pkgdir}/usr/share/doc/${pkgname}/${_licensefile}\"") licenseFile
+                            text "rm -f \"${pkgdir}/usr/share/doc/${pkgname}/${_licensefile}\"") licenseFile <$>
+                        empty <$>
+                        text "mkdir ${pkgdir}/usr/lib/ghc-${_ghcver}/shared" <$>
+                        text "(cd ${pkgdir}/usr/lib/ghc-${_ghcver}/shared;" <$>
+                        text "    for f in $(find .. -name \\*-ghc${_ghcver}.so); do" <$>
+                        text "        ln -s $f" <$>
+                        text "    done" <$>
+                        text ")"
                         ) <$>
                     char '}'
 
