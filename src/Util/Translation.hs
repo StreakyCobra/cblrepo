@@ -190,7 +190,7 @@ instance Pretty ArchPkg where
                     nest 4 (empty <$>
                         text "cd \"${srcdir}/${_hkgname}-${pkgver}\"" <$>
                         empty <$>
-                        nest 4 (text "runhaskell Setup configure -O -p \\" <$>
+                        nest 4 (text "runhaskell Setup configure -O -p --enable-executable-dynamic \\" <$>
                             text "--enable-split-objs --enable-shared --ghc-option=\"-dynload=deploy\" \\" <$>
                             text "--prefix=/usr --docdir=\"/usr/share/doc/${pkgname}\" \\" <$>
                             text "--libsubdir=\\$compiler/site-local/\\$pkgid" <> confFlags) <$>
@@ -205,7 +205,10 @@ instance Pretty ArchPkg where
                 exeBuildFunction = text "build() {" <>
                     nest 4 (empty <$> text "cd \"${srcdir}/${_hkgname}-${pkgver}\"" <$>
                         empty <$>
-                        text "runhaskell Setup configure -O --prefix=/usr --docdir=\"/usr/share/doc/${pkgname}\"" <> confFlags <$>
+                        nest 4 (text "runhaskell Setup configure -O -p --enable-executable-dynamic \\" <$>
+                            text "--enable-split-objs --enable-shared --ghc-option=\"-dynload=deploy\" \\" <$>
+                            text "--prefix=/usr --docdir=\"/usr/share/doc/${pkgname}\" \\" <$>
+                            confFlags) <$>
                         text "runhaskell Setup build"
                         ) <$>
                     char '}'
